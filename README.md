@@ -22,7 +22,7 @@ Para ser possível diminuí-lo em caso de surgimento de novos cenários como est
 
 
 
-User: Based on the following data:
+
 file1.cvs with: Entity,Day, Daily new confirmed cases of COVID-19 per million people as a header
 file2.csv: Entity,Day,Daily new confirmed deaths due to COVID-19 per million people (rolling 7-day average, right-aligned)
 file3.csv:Entity,Day,COVID-19 doses (daily, 7-day average, per million people)
@@ -123,8 +123,165 @@ Common dimensions across these files:
                                 └─────────────────────────┘
 ```
 
-## Implementation Steps:
+## Processo de ETL:
 
+
+Step 1: Extract Data in Databricks
+1. Set Up Databricks Environment
+# Import necessary libraries
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, to_date
+2. Upload CSV Files to Databricks
+In the Databricks workspace, click on "Data" in the left sidebar
+Click "Create Table" or "Create New Table"
+Select "Upload Files" and upload the four CSV files:
+casos_confirmados_por_milhao_de_pessoas.csv
+mortes_por_milhao_de_pessoas.csv
+doses_de_vacinas_por_milhao_de_pessoas.csv
+hospitalizados_numero_total.csv
+Alternatively, you can use DBFS (Databricks File System) to store these files:
+# If your files are already in cloud storage (S3, Azure Blob, etc.)
+# dbutils.fs.cp("s3://your-bucket/path/to/file.csv", "dbfs:/FileStore/covid_data/")
+
+# To check if files are correctly uploaded
+display(dbutils.fs.ls("dbfs:/FileStore/covid_data/"))
+3. Read the CSV Files (Separating by Future Fact Table)
+# Specify the file paths in DBFS
+cases_file_path = "/FileStore/covid_data/casos_confirmados_por_milhao_de_pessoas.csv"
+deaths_file_path = "/FileStore/covid_data/mortes_por_milhao_de_pessoas.csv"
+vaccines_file_path = "/FileStore/covid_data/doses_de_vacinas_por_milhao_de_pessoas.csv"
+hospital_file_path = "/FileStore/covid_data/hospitalizados_numero_total.csv"
+
+# Read confirmed cases data (for fact_covid_cases)
+df_cases = spark.read.format("csv") \
+    .option("header", "true") \
+    .option("inferSchema", "true") \
+    .load(cases_file_path)
+
+# Read deaths data (for fact_covid_deaths)
+df_deaths = spark.read.format("csv") \
+    .option("header", "true") \
+    .option("inferSchema", "true") \
+    .load(deaths_file_path)
+
+# Read vaccination data (for fact_vaccinations)
+df_vaccines = spark.read.format("csv") \
+    .option("header", "true") \
+    .option("inferSchema", "true") \
+    .load(vaccines_file_path)
+
+# Read hospitalization data (for fact_hospitalizations)
+df_hospital = spark.read.format("csv") \
+    .option("header", "true") \
+    .option("inferSchema", "true") \
+    .load(hospital_file_path)
+4. Inspect the Data with Separate Fact Tables in Mind
+# Display schema and sample data for each dataset (future fact table)
+print("Confirmed Cases Schema (future fact_covid_cases):")
+df_cases.printSchema()
+display(df_cases.limit(5))
+
+print("Deaths Schema (future fact_covid_deaths):")
+df_deaths.printSchema()
+display(df_deaths.limit(5))
+
+print("Vaccines Schema (future fact_vaccinations):")
+df_vaccines.printSchema()
+display(df_vaccines.limit(5))
+
+print("Hospitalizations Schema (future fact_hospitalizations):")
+df_hospital.printSchema()
+display(df_hospital.limit(5))
+
+# Get record counts for each dataset
+print("Records per dataset (future fact table):")
+print(f"Confirmed Cases: {df_cases.count()}")
+print(f"Deaths: {df_deaths.count()}")
+print(f"Vaccines: {df_vaccines.count()}")
+print(f"Hospitalizations: {df_hospital.count()}")
+5. Extract Dimension Data
+# Extract unique entity data for dim_location
+df_locations_cases = df_cases.select("Entity").distinct()
+df_locations_deaths = df_deaths.select("Entity").distinct()
+df_locations_vaccines = df_vaccines.select("Entity").distinct()
+df_locations_hospital = df_hospital.select("Entity", "Code").distinct()
+
+# Combine all unique locations into one comprehensive dimension table source
+df_locations_all = df_locations_cases.unionAll(df_locations_deaths) \
+                                    .unionAll(df_locations_vaccines) \
+                                    .distinct()
+
+# Join with hospital data to get codes where available
+df_locations_dim = df_locations_all.join(df_locations_hospital, on="Entity", how="left")
+
+# Extract date data for dim_date
+df_dates_cases = df_cases.select("Day").distinct()
+df_dates_deaths = df_deaths.select("Day").distinct()
+df_dates_vaccines = df_vaccines.select("Day").distinct()
+df_dates_hospital = df_hospital.select("Day").distinct()
+
+# Combine all unique dates for the date dimension
+df_dates_all = df_dates_cases.unionAll(df_dates_deaths) \
+                            .unionAll(df_dates_vaccines) \
+                            .unionAll(df_dates_hospital) \
+                            .distinct()
+6. Prepare Date Fields for Filtering (Separate for Each Fact)
+# Convert Day column to date type for filtering
+df_cases = df_cases.withColumn("Day", to_date(col("Day")))
+df_deaths = df_deaths.withColumn("Day", to_date(col("Day")))
+df_vaccines = df_vaccines.withColumn("Day", to_date(col("Day")))
+df_hospital = df_hospital.withColumn("Day", to_date(col("Day")))
+
+# Also convert date for dimension table source
+df_dates_all = df_dates_all.withColumn("Day", to_date(col("Day")))
+
+# Check if the conversion was successful
+print("Sample dates after conversion (cases fact source):")
+display(df_cases.select("Entity", "Day").limit(5))
+7. Rename Columns for Each Future Fact Table
+# Rename columns to match future fact table structure
+
+# For fact_covid_cases
+df_cases = df_cases.withColumnRenamed(
+    "Daily new confirmed cases of COVID-19 per million people (rolling 7-day average, right-aligned)", 
+    "cases_per_million"
+)
+
+# For fact_covid_deaths
+df_deaths = df_deaths.withColumnRenamed(
+    "Daily new confirmed deaths due to COVID-19 per million people (rolling 7-day average, right-aligned)", 
+    "deaths_per_million"
+)
+
+# For fact_vaccinations
+df_vaccines = df_vaccines.withColumnRenamed(
+    "COVID-19 doses (daily, 7-day average, per million people)", 
+    "doses_per_million"
+)
+
+# For fact_hospitalizations
+df_hospital = df_hospital.withColumnRenamed(
+    "Daily hospital occupancy", 
+    "hospital_occupancy"
+)
+8. Register Temporary Views (Separately for Each Fact Source)
+# Create temporary views to enable SQL queries
+df_cases.createOrReplaceTempView("covid_cases_source")
+df_deaths.createOrReplaceTempView("covid_deaths_source")
+df_vaccines.createOrReplaceTempView("covid_vaccines_source")
+df_hospital.createOrReplaceTempView("covid_hospital_source")
+
+# Create temporary views for dimension sources
+df_locations_dim.createOrReplaceTempView("dim_location_source")
+df_dates_all.createOrReplaceTempView("dim_date_source")
+
+# Verify with a simple SQL query
+display(spark.sql("SELECT Entity, Day, cases_per_million FROM covid_cases_source LIMIT 10"))
+9. Save Extracted Data as Delta Tables (Separate for Each Fact)
+# Create a database for raw data if it doesn't exist
+spark.sql("CREATE DATABASE IF NOT EXISTS covid_data_raw")
+
+# Save
 1. **Create dimension tables**:
    - `dim_entity`: Unique entities with their codes
    - `dim_date`: Calendar dimension with date hierarchies
@@ -151,180 +308,427 @@ Model: # Creating a Star Schema for COVID-19 Data in Databricks
 
 Below are the step-by-step instructions to implement the recommended star schema for your COVID-19 datasets in Databricks.
 
-## Step 1: Set Up the Databricks Environment
+
+
+## Step 2: Transform
+ # Detailed Steps for the Transform Phase in Databricks (Using Separate Fact Tables)
+
+After completing the extraction phase, the transformation phase involves preparing the data for the star schema model. Here's a comprehensive approach to the transformation step using Databricks:
+
+## Step 2: Transform Data in Databricks
+
+### 1. Filter Data to Match Date Range Requirements
 
 ```python
-# Create a new database for our COVID data model
-spark.sql("CREATE DATABASE IF NOT EXISTS covid_data_model")
+# Define date range constants (March 2020 to December 2021)
+from datetime import datetime
+start_date = datetime(2020, 3, 1)
+end_date = datetime(2021, 12, 31)
 
-# Use the new database
-spark.sql("USE covid_data_model")
+# Filter each dataset to include only data within the specified date range
+df_cases_filtered = df_cases.filter((col("Day") >= start_date) & (col("Day") <= end_date))
+df_deaths_filtered = df_deaths.filter((col("Day") >= start_date) & (col("Day") <= end_date))
+df_vaccines_filtered = df_vaccines.filter((col("Day") >= start_date) & (col("Day") <= end_date))
+df_hospital_filtered = df_hospital.filter((col("Day") >= start_date) & (col("Day") <= end_date))
+
+# Check record counts after filtering to ensure data exists
+print("Records after date filtering:")
+print(f"Confirmed Cases: {df_cases_filtered.count()}")
+print(f"Deaths: {df_deaths_filtered.count()}")
+print(f"Vaccines: {df_vaccines_filtered.count()}")
+print(f"Hospitalizations: {df_hospital_filtered.count()}")
 ```
 
-## Step 2: Upload Your CSV Files to Databricks
-
-1. **Navigate to your Databricks workspace**
-2. **Find the file upload option** (this varies by interface version):
-   - Look for "Data" or "Tables" in the sidebar, or
-   - Use the workspace file browser and navigate to FileStore
-
-3. **Upload your four CSV files** to `/FileStore/covid_data/`
-
-## Step 3: Read the Source CSV Files
+### 2. Create the Date Dimension Table
 
 ```python
-# Read all the source files
-cases_df = spark.read.option("header", "true").option("inferSchema", "true").csv("/FileStore/covid_data/file1.csv")
-deaths_df = spark.read.option("header", "true").option("inferSchema", "true").csv("/FileStore/covid_data/file2.csv")
-vaccines_df = spark.read.option("header", "true").option("inferSchema", "true").csv("/FileStore/covid_data/file3.csv")
-hospital_df = spark.read.option("header", "true").option("inferSchema", "true").csv("/FileStore/covid_data/file4.csv")
+from pyspark.sql.functions import year, month, dayofmonth, quarter, dayofweek, weekofyear, date_format
 
-# Display sample data
-display(cases_df.limit(5))
-display(deaths_df.limit(5))
-display(vaccines_df.limit(5))
-display(hospital_df.limit(5))
-```
+# Create the date dimension from all unique dates in the filtered datasets
+df_dates_all_filtered = df_dates_all.filter((col("Day") >= start_date) & (col("Day") <= end_date))
 
-## Step 4: Create the Dimension Tables
+# Generate all date attributes
+df_dim_date = df_dates_all_filtered.select(
+    col("Day").alias("full_date"),
+    dayofmonth("Day").alias("day"),
+    month("Day").alias("month"),
+    year("Day").alias("year"),
+    quarter("Day").alias("quarter"),
+    dayofweek("Day").alias("day_of_week"),
+    weekofyear("Day").alias("week_of_year"),
+    date_format("Day", "EEEE").alias("day_name"),
+    date_format("Day", "MMMM").alias("month_name")
+)
 
-### Create Entity Dimension
+# Add a date_id column as a surrogate key
+from pyspark.sql.functions import monotonically_increasing_id, row_number
+from pyspark.sql.window import Window
 
-```python
-# Create a unified entity dimension from all sources
-from pyspark.sql.functions import col, lit, monotonically_increasing_id
-
-# Collect all unique entities
-entities_from_cases = cases_df.select("Entity").distinct()
-entities_from_deaths = deaths_df.select("Entity").distinct()
-entities_from_vaccines = vaccines_df.select("Entity").distinct()
-entities_from_hospital = hospital_df.select("Entity").distinct()
-
-# Union all entities and remove duplicates
-all_entities = entities_from_cases.union(entities_from_deaths).union(entities_from_vaccines).union(entities_from_hospital).distinct()
-
-# Join with hospital data to get codes (which only appear in file4)
-entity_codes = hospital_df.select("Entity", "Code").distinct()
-dim_entity = all_entities.join(entity_codes, on="Entity", how="left")
-
-# Add entity_id
-dim_entity = dim_entity.withColumn("entity_id", monotonically_increasing_id())
-
-# Create the dimension table
-dim_entity.write.format("delta").mode("overwrite").saveAsTable("covid_data_model.dim_entity")
-
-# Display the entity dimension
-display(spark.table("covid_data_model.dim_entity"))
-```
-
-### Create Date Dimension
-
-```python
-from pyspark.sql.functions import to_date, year, month, dayofmonth, date_format, dayofweek
-
-# Collect all unique dates
-dates_from_cases = cases_df.select("Day").distinct()
-dates_from_deaths = deaths_df.select("Day").distinct()
-dates_from_vaccines = vaccines_df.select("Day").distinct()
-dates_from_hospital = hospital_df.select("Day").distinct()
-
-# Union all dates and remove duplicates
-all_dates = dates_from_cases.union(dates_from_deaths).union(dates_from_vaccines).union(dates_from_hospital).distinct()
-
-# Assume Day is in YYYY-MM-DD format
-date_df = all_dates.withColumn("full_date", to_date(col("Day")))
-
-# Create date hierarchies
-dim_date = date_df \
-    .withColumn("date_id", date_format(col("full_date"), "yyyyMMdd").cast("int")) \
-    .withColumn("day", dayofmonth(col("full_date"))) \
-    .withColumn("month", month(col("full_date"))) \
-    .withColumn("year", year(col("full_date"))) \
-    .withColumn("day_of_week", date_format(col("full_date"), "EEEE"))
-
-# Create the dimension table
-dim_date.write.format("delta").mode("overwrite").saveAsTable("covid_data_model.dim_date")
+window_spec = Window.orderBy("full_date")
+df_dim_date = df_dim_date.withColumn("date_id", row_number().over(window_spec))
 
 # Display the date dimension
-display(spark.table("covid_data_model.dim_date"))
+print("Date dimension sample:")
+display(df_dim_date.limit(10))
 ```
 
-## Step 5: Create the Fact Tables
-
-### Create COVID Cases Fact Table
+### 3. Create the Location Dimension Table
 
 ```python
-# Join cases data with dimension tables
-fact_covid_cases = cases_df \
-    .join(spark.table("covid_data_model.dim_entity"), on="Entity", how="inner") \
-    .join(spark.table("covid_data_model.dim_date"), cases_df["Day"] == spark.table("covid_data_model.dim_date")["Day"], how="inner") \
-    .select(
-        col("entity_id"),
-        col("date_id"),
-        col("Daily new confirmed cases of COVID-19 per million people").alias("new_cases_per_million")
-    )
+# Combine location information from all datasets
+# Note: Hospital data has the Code column which isn't present in other datasets
+df_locations_combined = df_cases_filtered.select("Entity").distinct() \
+    .join(df_hospital_filtered.select("Entity", "Code").distinct(), on="Entity", how="left")
 
-# Create the fact table
-fact_covid_cases.write.format("delta").mode("overwrite").saveAsTable("covid_data_model.fact_covid_cases")
+# Add a location_id as a surrogate key
+window_spec = Window.orderBy("Entity")
+df_dim_location = df_locations_combined.withColumn("location_id", row_number().over(window_spec))
 
-# Display the fact table
-display(spark.table("covid_data_model.fact_covid_cases").limit(10))
+# Add a continent column based on country mapping (simplified example)
+from pyspark.sql.functions import when, lit
+
+# This is a simplified example - in a real scenario, you'd have a more comprehensive mapping
+continent_mapping = [
+    (["United States", "Canada", "Mexico"], "North America"),
+    (["Brazil", "Argentina", "Colombia"], "South America"),
+    (["United Kingdom", "France", "Germany", "Italy", "Spain"], "Europe"),
+    (["China", "Japan", "India", "South Korea"], "Asia"),
+    (["Australia", "New Zealand"], "Oceania"),
+    (["South Africa", "Nigeria", "Egypt"], "Africa")
+]
+
+# Build the continent mapping expression
+continent_expr = None
+for countries, continent in continent_mapping:
+    for country in countries:
+        country_expr = (col("Entity") == country)
+        if continent_expr is None:
+            continent_expr = when(country_expr, lit(continent))
+        else:
+            continent_expr = continent_expr.when(country_expr, lit(continent))
+
+# Apply the continent mapping with a default value
+df_dim_location = df_dim_location.withColumn(
+    "continent", 
+    continent_expr.otherwise(lit("Unknown"))
+)
+
+# Handle null values in Code column
+df_dim_location = df_dim_location.withColumn(
+    "location_code",
+    when(col("Code").isNull(), lit("UNK")).otherwise(col("Code"))
+)
+
+# Reorder and rename columns
+df_dim_location = df_dim_location.select(
+    "location_id", 
+    col("Entity").alias("location_name"), 
+    "location_code",
+    "continent"
+)
+
+# Display the location dimension
+print("Location dimension sample:")
+display(df_dim_location.limit(10))
 ```
 
-### Create COVID Deaths Fact Table
+### 4. Transform Fact Tables (Cases, Deaths, Vaccines, Hospitalizations)
 
 ```python
-# Join deaths data with dimension tables
-fact_covid_deaths = deaths_df \
-    .join(spark.table("covid_data_model.dim_entity"), on="Entity", how="inner") \
-    .join(spark.table("covid_data_model.dim_date"), deaths_df["Day"] == spark.table("covid_data_model.dim_date")["Day"], how="inner") \
-    .select(
-        col("entity_id"),
-        col("date_id"),
-        col("Daily new confirmed deaths due to COVID-19 per million people (rolling 7-day average, right-aligned)").alias("new_deaths_per_million")
+# Function to transform each fact table by joining with dimension tables
+def create_fact_table(source_df, metric_name, metric_column):
+    # Join with dimensions to get the surrogate keys
+    fact_df = source_df.join(
+        df_dim_location,
+        source_df["Entity"] == df_dim_location["location_name"],
+        "inner"
+    ).join(
+        df_dim_date,
+        source_df["Day"] == df_dim_date["full_date"],
+        "inner"
     )
+    
+    # Select only the needed columns
+    fact_df = fact_df.select(
+        "date_id",
+        "location_id",
+        col(metric_column).alias(metric_column)
+    )
+    
+    # Handle missing values in the metric column
+    fact_df = fact_df.withColumn(
+        metric_column,
+        when(col(metric_column).isNull(), 0).otherwise(col(metric_column))
+    )
+    
+    return fact_df
 
-# Create the fact table
-fact_covid_deaths.write.format("delta").mode("overwrite").saveAsTable("covid_data_model.fact_covid_deaths")
+# Create each fact table
+fact_covid_cases = create_fact_table(df_cases_filtered, "Cases", "cases_per_million")
+fact_covid_deaths = create_fact_table(df_deaths_filtered, "Deaths", "deaths_per_million")
+fact_vaccinations = create_fact_table(df_vaccines_filtered, "Vaccines", "doses_per_million")
 
-# Display the fact table
-display(spark.table("covid_data_model.fact_covid_deaths").limit(10))
+# Hospital fact table needs special handling due to the Code column
+fact_hospitalizations = df_hospital_filtered.join(
+    df_dim_location,
+    (df_hospital_filtered["Entity"] == df_dim_location["location_name"]) &
+    (df_hospital_filtered["Code"] == df_dim_location["location_code"]),
+    "inner"
+).join(
+    df_dim_date,
+    df_hospital_filtered["Day"] == df_dim_date["full_date"],
+    "inner"
+)
+
+fact_hospitalizations = fact_hospitalizations.select(
+    "date_id",
+    "location_id",
+    col("hospital_occupancy").alias("hospital_occupancy")
+)
+
+fact_hospitalizations = fact_hospitalizations.withColumn(
+    "hospital_occupancy",
+    when(col("hospital_occupancy").isNull(), 0).otherwise(col("hospital_occupancy"))
+)
+
+# Display samples of each fact table
+print("COVID Cases Fact Table Sample:")
+display(fact_covid_cases.limit(5))
+
+print("COVID Deaths Fact Table Sample:")
+display(fact_covid_deaths.limit(5))
+
+print("Vaccinations Fact Table Sample:")
+display(fact_vaccinations.limit(5))
+
+print("Hospitalizations Fact Table Sample:")
+display(fact_hospitalizations.limit(5))
 ```
 
-### Create COVID Vaccinations Fact Table
+### 5. Data Quality Checks
 
 ```python
-# Join vaccinations data with dimension tables
-fact_covid_vaccinations = vaccines_df \
-    .join(spark.table("covid_data_model.dim_entity"), on="Entity", how="inner") \
-    .join(spark.table("covid_data_model.dim_date"), vaccines_df["Day"] == spark.table("covid_data_model.dim_date")["Day"], how="inner") \
-    .select(
-        col("entity_id"),
-        col("date_id"),
-        col("COVID-19 doses (daily, 7-day average, per million people)").alias("doses_per_million")
-    )
+# Check for missing dimension keys in fact tables
+def check_missing_keys(
 
-# Create the fact table
-fact_covid_vaccinations.write.format("delta").mode("overwrite").saveAsTable("covid_data_model.fact_covid_vaccinations")
 
-# Display the fact table
-display(spark.table("covid_data_model.fact_covid_vaccinations").limit(10))
+
+# LOAD
+# Detailed Steps for the Load Phase in Databricks (Using Separate Fact Tables)
+
+After completing the extraction and transformation phases, the loading phase involves saving the transformed data into the target star schema. Here's a comprehensive approach to the loading step using Databricks:
+
+## Step 3: Load Data in Databricks
+
+### 1. Create Database and Schema
+
+```python
+# Create a new database for the star schema model
+spark.sql("CREATE DATABASE IF NOT EXISTS covid_star_schema")
+spark.sql("USE covid_star_schema")
 ```
 
-### Create Hospital Occupancy Fact Table
+### 2. Create Optimized Tables with Delta Lake
 
 ```python
-# Join hospital data with dimension tables
-fact_hospital_occupancy = hospital_df \
-    .join(spark.table("covid_data_model.dim_entity"), on="Entity", how="inner") \
-    .join(spark.table("covid_data_model.dim_date"), hospital_df["Day"] == spark.table("covid_data_model.dim_date")["Day"], how="inner") \
-    .select(
-        col("entity_id"),
-        col("date_id"),
-        col("Daily hospital occupancy").alias("hospital_occupancy")
-    )
+# Set up configurations for optimized Delta tables
+spark.conf.set("spark.databricks.delta.properties.defaults.enableChangeDataFeed", "true")
+spark.conf.set("spark.databricks.delta.optimizeWrite.enabled", "true")
+spark.conf.set("spark.databricks.delta.autoCompact.enabled", "true")
+```
 
-# Create the fact table
-fact_hospital_occupancy.write.format("delta").mode("overwrite").saveAsTable("covid_data_model.fact_hospital_occupancy")
+### 3. Load Dimension Tables
 
-#
+```python
+# Load the date dimension table
+df_dim_date.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .option("overwriteSchema", "true") \
+    .option("comment", "Date dimension for COVID-19 data") \
+    .saveAsTable("covid_star_schema.dim_date")
+
+# Create a Z-order index on the date dimension for faster queries
+spark.sql("""
+    OPTIMIZE covid_star_schema.dim_date
+    ZORDER BY (date_id, full_date)
+""")
+
+# Load the location dimension table
+df_dim_location.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .option("overwriteSchema", "true") \
+    .option("comment", "Location dimension for COVID-19 data") \
+    .saveAsTable("covid_star_schema.dim_location")
+
+# Create a Z-order index on the location dimension
+spark.sql("""
+    OPTIMIZE covid_star_schema.dim_location
+    ZORDER BY (location_id, location_name)
+""")
+
+# Verify dimension tables were loaded correctly
+print("Date dimension record count:", spark.table("covid_star_schema.dim_date").count())
+print("Location dimension record count:", spark.table("covid_star_schema.dim_location").count())
+```
+
+### 4. Load Fact Tables
+
+```python
+# Load the fact tables
+
+# 1. COVID Cases Fact Table
+fact_covid_cases.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .option("overwriteSchema", "true") \
+    .option("comment", "Fact table for COVID-19 cases per million") \
+    .saveAsTable("covid_star_schema.fact_covid_cases")
+
+# 2. COVID Deaths Fact Table
+fact_covid_deaths.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .option("overwriteSchema", "true") \
+    .option("comment", "Fact table for COVID-19 deaths per million") \
+    .saveAsTable("covid_star_schema.fact_covid_deaths")
+
+# 3. Vaccinations Fact Table
+fact_vaccinations.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .option("overwriteSchema", "true") \
+    .option("comment", "Fact table for COVID-19 vaccination doses per million") \
+    .saveAsTable("covid_star_schema.fact_vaccinations")
+
+# 4. Hospitalizations Fact Table
+fact_hospitalizations.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .option("overwriteSchema", "true") \
+    .option("comment", "Fact table for COVID-19 hospital occupancy") \
+    .saveAsTable("covid_star_schema.fact_hospitalizations")
+
+# Verify fact tables were loaded correctly
+print("COVID cases fact table record count:", spark.table("covid_star_schema.fact_covid_cases").count())
+print("COVID deaths fact table record count:", spark.table("covid_star_schema.fact_covid_deaths").count())
+print("Vaccinations fact table record count:", spark.table("covid_star_schema.fact_vaccinations").count())
+print("Hospitalizations fact table record count:", spark.table("covid_star_schema.fact_hospitalizations").count())
+```
+
+### 5. Create Partitions and Optimize Fact Tables
+
+```python
+# Optimize each fact table with appropriate partitioning and Z-ordering
+
+# 1. Optimize COVID Cases Fact Table
+spark.sql("""
+    OPTIMIZE covid_star_schema.fact_covid_cases
+    ZORDER BY (date_id, location_id)
+""")
+
+# 2. Optimize COVID Deaths Fact Table
+spark.sql("""
+    OPTIMIZE covid_star_schema.fact_covid_deaths
+    ZORDER BY (date_id, location_id)
+""")
+
+# 3. Optimize Vaccinations Fact Table
+spark.sql("""
+    OPTIMIZE covid_star_schema.fact_vaccinations
+    ZORDER BY (date_id, location_id)
+""")
+
+# 4. Optimize Hospitalizations Fact Table
+spark.sql("""
+    OPTIMIZE covid_star_schema.fact_hospitalizations
+    ZORDER BY (date_id, location_id)
+""")
+```
+
+### 6. Define Table Properties and Constraints
+
+```python
+# Add constraints to ensure data integrity
+
+# Add constraints to dim_date
+spark.sql("""
+    ALTER TABLE covid_star_schema.dim_date
+    ADD CONSTRAINT pk_dim_date PRIMARY KEY (date_id)
+""")
+
+# Add constraints to dim_location
+spark.sql("""
+    ALTER TABLE covid_star_schema.dim_location
+    ADD CONSTRAINT pk_dim_location PRIMARY KEY (location_id)
+""")
+
+# Add foreign key constraints to fact tables
+# Note: In Delta Lake, foreign key constraints are not enforced but serve as documentation
+
+# Fact COVID Cases
+spark.sql("""
+    ALTER TABLE covid_star_schema.fact_covid_cases
+    ADD CONSTRAINT fk_fact_covid_cases_date FOREIGN KEY (date_id)
+    REFERENCES covid_star_schema.dim_date(date_id)
+""")
+
+spark.sql("""
+    ALTER TABLE covid_star_schema.fact_covid_cases
+    ADD CONSTRAINT fk_fact_covid_cases_location FOREIGN KEY (location_id)
+    REFERENCES covid_star_schema.dim_location(location_id)
+""")
+
+# Apply similar constraints to other fact tables
+# (For brevity, not showing all similar constraint definitions)
+```
+
+### 7. Create Views for Common Analytical Queries
+
+```python
+# Create views that simplify common analytical queries
+
+# 1. COVID-19 Cases View
+spark.sql("""
+    CREATE OR REPLACE VIEW covid_star_schema.vw_covid_cases AS
+    SELECT 
+        d.full_date,
+        d.year,
+        d.month,
+        d.month_name,
+        l.location_name,
+        l.continent,
+        c.cases_per_million
+    FROM covid_star_schema.fact_covid_cases c
+    JOIN covid_star_schema.dim_date d ON c.date_id = d.date_id
+    JOIN covid_star_schema.dim_location l ON c.location_id = l.location_id
+""")
+
+# 2. COVID-19 Deaths View
+spark.sql("""
+    CREATE OR REPLACE VIEW covid_star_schema.vw_covid_deaths AS
+    SELECT 
+        d.full_date,
+        d.year,
+        d.month,
+        d.month_name,
+        l.location_name,
+        l.continent,
+        c.deaths_per_million
+    FROM covid_star_schema.fact_covid_deaths c
+    JOIN covid_star_schema.dim_date d ON c.date_id = d.date_id
+    JOIN covid_star_schema.dim_location l ON c.location_id = l.location_id
+""")
+
+# 3. COVID-19 Comprehensive View (combining all metrics)
+spark.sql("""
+    CREATE OR REPLACE VIEW covid_star_schema.vw_covid_comprehensive AS
+    SELECT 
+        d.full_date,
+        d.year,
+        d.month,
+        d.month_name,
+        l.location_name,
+        l.continent,
+        c.cases_per_million
