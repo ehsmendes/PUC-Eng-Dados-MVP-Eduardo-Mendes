@@ -1,18 +1,23 @@
 # PUC-Eng-Dados-MVP
 ## MVP de Engenharia de dados PUC
 ### Objetivo:
-mortalidade, efetividade das medidas de prevenção adotadas e eficácia das vacinas contra seus efeitos colaterais. 
+De janeiro de 2020 até dezembro de 2021 causou uma revolução mundial devido a pandemia de COVID-19, em pouco tempo, vimos mudanças drásticas na mudança de hábito, medo, morte e instabilidade econômica. O que antes era considerado normal, em um piscar de olhos se tornou perigoso, vivíamos a era do "novo normal". 
+Este tema tão intrigante, devido a estes e outros fatores, dispertou a minha curiosidade por isso o elegi para, pelo menos tentar responder com dados, algumas perguntas que pairaram na minha mente neste período. 
 
-Para ser possível diminuí-lo em caso de surgimento de novos cenários como este em um curto período.
 
+Além de tentar me ajudar com estas dúvidas o trabalho tem como obejtivo enteder como ficou a distribuição dos casos reportados (Brasil e mundo), distribuição da taxa mortalidade (Brasil e mundo), eficácia das vacinas contra seus efeitos colaterais. 
+
+Há também a pretenção utópica de quem sabe, ajudar a entender melhor o cenário vivído recentemente,
 **Perguntas**
 
-1. Em termos percentuais, qual foi a taxa de mortalidade da COVID-10 no mundo? 
-2. Quantidate de pessoas hospoitalizadas X mortes.
-3. Relação da taxa de mortalidade no mundo com as taxas brasileiras.
-4. Qual foi o grau de efetividade das medidas de segurança propostas pela OMS, com relação à pandemia?
-5. Qual foi a efetividade das vacinas com relação à taxa de mortalidade e surgimento de novos casos?
-6. Ritmo de vacinação por país.
+1. Em termos percentuais, qual foi a taxa de mortalidade da COVID-10 no mundo?
+2. Esse número flutou ao ser comparado com os índices brasileiros?
+3. O número de casos teve variação entre os países?
+4. Variação entre o Brasil e o mundo sobre a quantidate de pessoas hospoitalizadas X mortes.
+5. Relação da taxa de mortalidade no mundo com as taxas brasileiras.
+6. Qual foi a efetividade das vacinas com relação à taxa de mortalidade e surgimento de novos casos? 
+7. Ritmo de vacinação por país.
+8. Em relação à periodos anteriores à COVID-19, qual o percentual de mortalidade acrescido?
 
 ### Coleta:
 Os dados utilizados para a análise foram coletados do site https://ourworldindata.org/, que já na pendemia da COVID-19 os disponibilizava de forma pública e gratuita. O site é fruto de um projeto da parceria entre a Universidsde de Oxford, responsável pelas pesquisas  e uma ONG chamada Global Change Data Lab que é responsável pela manutenção do site.
