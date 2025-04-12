@@ -1,7 +1,6 @@
 ## PUC-Eng-Dados-MVP
 ### MVP de Engenharia de dados PUC
-[Clique aqui para acessar o Notebook com os códigos, resultado de queries e gráficos](
-https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2149961212973897/667217794031682/3413641925918938/latest.html)
+[Clique aqui para acessar o Notebook com os códigos, resultado de queries e gráficos](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2149961212973897/667217794031682/3413641925918938/latest.html)
 
 #### 1 - Objetivo: Objetivo.
 De janeiro de 2020 até dezembro de 2021 causou uma revolução mundial devido à pandemia de COVID-19, em pouco tempo, vimos mudanças drásticas na mudança de hábito, medo, morte e instabilidade econômica. O que antes era considerado normal, em um piscar de olhos se tornou perigoso, vivíamos a era do "novo normal". 
@@ -76,8 +75,7 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 ###### Criação das tabelas bronze - Dados originais,sem alteração.
 ##### 4.3 - Transformação dos dados:
 
-[Clique aqui para acessar o Notebook com os códigos, resultado de queries e gráficos](
-https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2149961212973897/667217794031682/3413641925918938/latest.html)
+[Clique aqui para acessar o Notebook com os códigos, resultado de queries e gráficos](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2149961212973897/667217794031682/3413641925918938/latest.html)
 
 #### 5 Análise (3,0 pt). 
 ##### 5.1 - Respondendo perguntas
