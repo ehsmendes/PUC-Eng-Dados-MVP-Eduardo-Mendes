@@ -19,7 +19,7 @@ Há também a pretensão utópica de quem sabe, ajudar a entender melhor o cená
 6. Tempo entre a primera dose administrada no mundo X Brasil. ok
 7. Ritmo de vacinação por país.
 
-#### 2 - Coleta: Coleta (0,5 pt) OK
+#### 2 - Coleta:
 Os dados utilizados para a análise foram coletados do site https://ourworldindata.org/, que já na pendemia da COVID-19 os disponibilizava de forma pública e gratuita. O site é fruto de um projeto da parceria entre a Universidsde de Oxford, responsável pelas pesquisas  e uma ONG chamada Global Change Data Lab que é responsável pela manutenção do site.
 O período utilizado para realizar o MVP foi de março de 2020, período em que foi decretado o "Lock Down" até a dezembro de 2021 quando a maioria das pessoas no mundo já haviam recebido as doses das vacinas e a pandemida estava controlada.
 Os arquivos baixados foram os seguintes:
@@ -28,7 +28,7 @@ Os arquivos baixados foram os seguintes:
 - number-of-covid-19-patients-in-hospital-per-million-people
 - daily-covid-19-vaccine-doses-administered-per-million-people
 
-#### 3- Modelagem Modelagem (2,0 pt)
+#### 3- Modelagem Modelagem
 
 Baseado na características dos dados coletados, o esquema **estrela** escolhido para a modelagem, pelas seguintes razões:
 
@@ -77,7 +77,7 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 
 [Clique aqui para acessar o Notebook com os códigos, resultado de queries e gráficos](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2149961212973897/667217794031682/3413641925918938/latest.html)
 
-#### 5 Análise (3,0 pt). 
+#### 5 Análise.
 ##### 5.1 - Respondendo perguntas
 ###### 5.1.1 - Qual foi a taxa de mortalidade da COVID-19 por milhão de pessoas no mundo?
 ###### R: Taxa de mortalidade mundial 0.014
