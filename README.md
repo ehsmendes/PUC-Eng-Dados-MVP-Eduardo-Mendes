@@ -2,10 +2,10 @@
 ### MVP de Engenharia de dados PUC
 [Clique aqui para acessar o Notebook com os códigos, resultado de queries e gráficos](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2149961212973897/667217794031682/3413641925918938/latest.html)
 
-#### 1 - Objetivo: Objetivo.
+## PUC-Eng-Dados-MVP
 #### 1 - Objetivo: Objetivo.
 De janeiro de 2020 até dezembro de 2021 o mundo se viu numa revolução devido a pandemia da COVID-19. Em pouco tempo, vimos mudanças drásticas na mudança de hábito, medo, morte e instabilidade econômica. O que antes era considerado normal, em um piscar de olhos se tornou perigoso. Vivíamos a era do "novo normal". 
-Este tema, devido a estes e outros fatores, despertou a minha curiosidade por isso o elegi como objeto de meu estudo para, pelo menos tentar responder com dados, algumas perguntas que ficaram, na minha mente neste período. 
+Este tema, devido a estes e outros fatores, despertou a minha curiosidade por isso o elegi como objeto de meu estudo para, pelo menos tentar responder com dados, algumas perguntas que ficaram na minha mente neste período. 
 
 Além de tentar me ajudar com estas dúvidas o trabalho tem como objetivo entender como ficou a distribuição dos casos reportados (Brasil e mundo), distribuição da taxa mortalidade (Brasil e mundo) e eficácia das vacinas.
 
@@ -21,25 +21,26 @@ Desta forma elaborei as seguintes perguntas:
 
 #### 2 - Coleta:
 Os dados utilizados para a análise foram coletados do site https://ourworldindata.org/, que já na pendemia da COVID-19 os disponibilizava de forma pública e gratuita. O site é fruto de um projeto da parceria entre a Universidsde de Oxford, responsável pelas pesquisas  e uma ONG chamada Global Change Data Lab que é responsável pela manutenção do site.
-O período utilizado para realizar o MVP foi de março de 2020, período em que foi decretado o "Lock Down" até a dezembro de 2021 quando a maioria das pessoas no mundo já haviam recebido as doses das vacinas e a pandemida estava controlada.
+O período utilizado para realizar o MVP foi de março de 2020, período em que foi decretado o "Lock Down" até a dezembro de 2021 quando a maioria das pessoas no mundo já haviam recebido as doses das vacinas e a pandemia estava controlada.
 Os arquivos baixados foram os seguintes:
 - daily-new-confirmed-covid-19-cases-per-million-people
 - daily-new-confirmed-covid-19-deaths-per-million-people
 - number-of-covid-19-patients-in-hospital-per-million-people
 - daily-covid-19-vaccine-doses-administered-per-million-people
 
-#### 3- Modelagem Modelagem
+#### 3- Modelagem.
 
 Baseado na características dos dados coletados, o esquema **estrela** escolhido para a modelagem, pelas seguintes razões:
+
 
 
 1. **Nível de normanlização apropriado**:
 
 2. **Performance das Queries**:
   
-3. **Intuitive Representation**:
+3. **Representação Intuitiva**:
 
-4. **Flexibility**:
+4. **Flexibilidade**
 
 
 **Abaixo a imagem de como ficou o modelo:**
@@ -88,14 +89,13 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 ###### R: Sim - A taxa brasileira foi bem maior que a mundial, 0.028 contra 0.014, ou seja, o dobro.
 
 ![Figura](./pictures/taxa_morte_brasil.jpg)
-###### 5.1.2.1 - Expansão da pergunta - Esse número flutuou ao ser comparado com os índices brasileiros?
-###### As taxas brasileiras, estão entram as 15 maiores do mundo? 
-###### R: Analisando os 15 países com as maiores taxas de mortalidade, as brasileiras são bem menores, flutuação de 0.01 em comparação com a 15 lugar (North Macedonia). Dois países da América Latina com taxas bem superiores como México com 0.076 e Peru com 0.089.  
+###### 5.1.2.1 - Expansão da pergunta - Esse número flutuou ao ser comparado com os índices brasileiros? As taxas brasileiras, estão entram as 15 maiores do mundo? 
+###### R: Não. Analisando os 15 países com as maiores taxas de mortalidade, as brasileiras são bem menores em comparação com a 15 lugar, North Macedonia, com 0.37. Há dois países da América Latina com taxas bem superiores, como México com 0.076 e Peru com 0.089.  
 
 ![Figura](./pictures/taxa_morte_maiores.jpg)
 
 ###### 5.1.2.2- Expansão da pergunta - Esse número flutuou ao ser comparado com os índices brasileiros? As taxas brasileiras, estão entram as 15 menores do mundo?
-###### R: Analisando os 15 países com as menores taxas de mortalidade, as taxas brasileiras (0.028) são bem maiores em comparação com a 15 lugar, Bahrain (0.005).
+###### R: Não. Analisando os 15 países com as menores taxas de mortalidade, as taxas brasileiras (0.028) são bem maiores em comparação com a 15 lugar, Bahrain (0.005).
 
 ![Figura](./pictures/taxa_morte_menores.jpg)
 
@@ -115,7 +115,7 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 ![Figura](./pictures/casos_brasil.jpg)
 
 ###### 5.1.4.2 Expansão da pergunta - O número de casos teve variação entre as localidades? Tá, mas e a relação do Brasil com localidades semelhantes em termos de população, cultura e com a China que foi a origem da pandemia?
-###### R: Espanta a quantidade de casos reportados pela China (país de origem da pandemia) contra as demais localidades. Brasil e Europa quase equivalentes, mas há um aumento razoável de caos quando se compara com os E.U.A.
+###### R: Espanta a quantidade de casos reportados pela China (país de origem da pandemia) contra as demais localidades. Brasil e Europa quase equivalentes, mas há um aumento razoável de casos quando se compara com os E.U.A.
 
 ![Figura](./pictures/casos_comparacao.jpg)
 
@@ -136,8 +136,10 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 ###### 5.1.7. Ritmo de vacinação por país.
 ###### R: Aqui, foi usado o mesmo parâmetro de escolha das localidades para comparação. Localidades semelhantes em termos de população, cultura e a China que foi a origem da pandemia. Alguns pontos interessantes:
 ###### 1. Estados Unidos com ritmo muito forte até abril(2021), depois começa a cair até novembro (2021) quando há um leve aummento mantendo-se estável até o fim do período de medição.
-###### 2. O ritmo do Brasil, é bom até abril (2021) quando para de crescer. Cai em maio(2021) e volta forte em junho (2021). Se mantém atá agosto (2021) quando começa a diminuir até o final do período.
+###### 2. O ritmo do Brasil, é bom até abril (2021) quando para de crescer. Cai em maio(2021) e volta forte em junho (2021). Se mantém até agosto (2021) quando começa a diminuir até o final do período.
 ###### 3. China tem um crescimento muito grande em maio (2021) que coincide com a queda de vacinação nos E.U.A. Se mantém forte até setembro (2021). Quando começa a cair, em novembro(2021) volta a crescer e tem um pico em dezembro (2021).
+
+###### Convido para fazerem suas próprias manipulações, clicando em cada uma das localidades, incluindo ou removendo-a do gráfico.
 
 ###### Convido para fazerem suas próprias manipulações, clicando em cada uma das localidades, incluindo ou removendo-a do gráfico.
 
@@ -145,15 +147,14 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 ![Figura](./pictures/vacina_ritmo.jpg)
 
 ###### 5.1.7. Ritmo de vacinação por país - Expansão da pergunta
-###### Aqui é um cruzamento entre o ritmo de vacinação contra a taxa de mortalidade. Interessante ver como o aumento das doses dimuniu a quantidade de mortalidade
+###### Aqui é um cruzamento entre o ritmo de vacinação contra a taxa de mortalidade. Interessante ver como o aumento das doses diminui a quantidade de mortalidade
 
 ![Figura](./pictures/vacina_contra_morte.jpg)
 
 ##### 6. Discussão Geral.
-##### A pandemia da COVID-19 causou um impacto muito grande no mundo, consegui tirar como conclusão que o que mais matou não foi a taxa de contaminação em si, mas o nível de preparo dos países com relação aos seus sistemas de saúde, frágil em países em desenvolvimento como o Brasil. 
-##### A taxa de contaminação variou bastante entre as localidades, sendo alta até mesmo em localidades mais desenvolvidas como, E.U.A e Europa. Por outro lado, foi surpreendentemente baixa na China que foi a origem do vírus.
-##### As vacinas foram super importantes para o fim da pandemia, mas houve um determinado período onde os países em desenvolvimento não conseguiram manter um ritmo adequado, muito provavelmente devido à alta demanda das localidades que de fato produziram suas vacinas, como a Europa com a AztraZeneca, Pfizer e Janssen nos E.U.A, e Corona-Vac na China.
-
+##### A pandemia da COVID-19 causou um impacto muito grande no mundo, consegui tirar como conclusão que o que mais matou não foi a taxa de contaminação em si, mas o nível de preparo dos países com relação aos seus sistemas de saúde, frágeis em países em desenvolvimento como o Brasil. 
+##### A taxa de contaminação variou bastante entre as localidades, sendo alta até mesmo em localidades mais desenvolvidas como, E.U.A e Europa. Por outro lado, foi surpreendentemente baixa na China, origem do vírus.
+##### As vacinas foram super importantes para o fim da pandemia, mas houve um determinado período onde os países em desenvolvimento não conseguiram manter um ritmo adequado, muito provavelmente devido à alta demanda das localidades que de fato produziram suas vacinas, como a Europa com a AstraZeneca, Pfizer e Janssen nos E.U.A, e Corona-Vac na China.
 
 ##### 7. Autoavaliação
 
