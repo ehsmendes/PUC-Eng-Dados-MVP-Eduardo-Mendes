@@ -3,20 +3,20 @@
 [Clique aqui para acessar o Notebook com os códigos, resultado de queries e gráficos](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/2149961212973897/667217794031682/3413641925918938/latest.html)
 
 #### 1 - Objetivo: Objetivo.
-De janeiro de 2020 até dezembro de 2021 causou uma revolução mundial devido à pandemia de COVID-19, em pouco tempo, vimos mudanças drásticas na mudança de hábito, medo, morte e instabilidade econômica. O que antes era considerado normal, em um piscar de olhos se tornou perigoso, vivíamos a era do "novo normal". 
-Este tema tão intrigante, devido a estes e outros fatores, despertou a minha curiosidade por isso o elegi para, pelo menos tentar responder com dados, algumas perguntas que pairaram na minha mente neste período. 
+#### 1 - Objetivo: Objetivo.
+De janeiro de 2020 até dezembro de 2021 o mundo se viu numa revolução devido a pandemia da COVID-19. Em pouco tempo, vimos mudanças drásticas na mudança de hábito, medo, morte e instabilidade econômica. O que antes era considerado normal, em um piscar de olhos se tornou perigoso. Vivíamos a era do "novo normal". 
+Este tema, devido a estes e outros fatores, despertou a minha curiosidade por isso o elegi como objeto de meu estudo para, pelo menos tentar responder com dados, algumas perguntas que ficaram, na minha mente neste período. 
 
-Além de tentar me ajudar com estas dúvidas o trabalho tem como objetivo entender como ficou a distribuição dos casos reportados (Brasil e mundo), distribuição da taxa mortalidade (Brasil e mundo), eficácia das vacinas contra seus efeitos colaterais. 
+Além de tentar me ajudar com estas dúvidas o trabalho tem como objetivo entender como ficou a distribuição dos casos reportados (Brasil e mundo), distribuição da taxa mortalidade (Brasil e mundo) e eficácia das vacinas.
 
-Há também a pretensão utópica de quem sabe, ajudar a entender melhor o cenário vívido recentemente,
-**Perguntas**
+Desta forma elaborei as seguintes perguntas:
 
 1. Qual foi a taxa de mortalidade da COVID-19 por milhão de pessoas no mundo?
 2. Esse número flutuou ao ser comparado com os índices brasileiros?
 3. Qual a localidade com o maior número de casos reportados?
-4. O número de casos teve variação entre os países?  --- RESPONSER
+4. O número de casos teve variação entre os países?
 5. Variação entre o Brasil e o mundo sobre a quantidate de pessoas hospitalizadas X mortes. 
-6. Tempo entre a primera dose administrada no mundo X Brasil. ok
+6. Tempo entre a primera dose administrada no mundo X Brasil.
 7. Ritmo de vacinação por país.
 
 #### 2 - Coleta:
