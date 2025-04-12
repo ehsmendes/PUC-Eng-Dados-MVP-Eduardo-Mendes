@@ -1,0 +1,37 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36" version="26.2.9">
+  <diagram name="Page-1" id="c0Cwg4PDeo5cECizFtMH">
+    <mxGraphModel dx="1382" dy="655" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="wh1y_TBZ_yXPx0_1Oxro-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="609.5" y="162" as="sourcePoint" />
+            <mxPoint x="400" y="310" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="610" y="160" />
+              <mxPoint x="401" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wh1y_TBZ_yXPx0_1Oxro-1" value="&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;&lt;font face=&quot;Courier New&quot; style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;&amp;nbsp; date_dimension:&lt;/b&gt;&lt;/font&gt;&lt;/span&gt;&lt;div&gt;&lt;div style=&quot;&quot;&gt;&lt;font face=&quot;Courier New&quot; color=&quot;rgba(0, 0, 0, 0.8)&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;font face=&quot;Courier New&quot; style=&quot;font-size: 14px;&quot;&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;- date_key (PK)&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;&lt;font face=&quot;Courier New&quot; size=&quot;3&quot;&gt;- data&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;&lt;font face=&quot;Courier New&quot; size=&quot;3&quot;&gt;- dia&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;&lt;font face=&quot;Courier New&quot; size=&quot;3&quot;&gt;- mes&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;&lt;font face=&quot;Courier New&quot; style=&quot;&quot; size=&quot;3&quot;&gt;- ano&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="570" y="84" width="190" height="156" as="geometry" />
+        </mxCell>
+        <mxCell id="wh1y_TBZ_yXPx0_1Oxro-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="wh1y_TBZ_yXPx0_1Oxro-2" target="wh1y_TBZ_yXPx0_1Oxro-3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="160" />
+              <mxPoint x="360" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wh1y_TBZ_yXPx0_1Oxro-2" value="&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;&lt;font face=&quot;Courier New&quot; style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;&amp;nbsp; location_dimension:&lt;/b&gt;&lt;/font&gt;&lt;/span&gt;&lt;div&gt;&lt;div style=&quot;&quot;&gt;&lt;font face=&quot;Courier New&quot; color=&quot;rgba(0, 0, 0, 0.8)&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;font face=&quot;Courier New&quot; style=&quot;font-size: 14px;&quot;&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;- location_key (PK)&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;&quot;&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);&quot;&gt;&lt;font face=&quot;Courier New&quot; size=&quot;3&quot;&gt;- entity_name&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="30" y="79" width="190" height="161" as="geometry" />
+        </mxCell>
+        <mxCell id="wh1y_TBZ_yXPx0_1Oxro-3" value="&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;font&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b style=&quot;&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&amp;nbsp; covid_facts:&lt;/font&gt;&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;- date_key (FK)&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;- location_key (FK)&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;- casos_por_milhao&amp;nbsp;&lt;/span&gt;&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;- mortes_por_milhao&lt;/span&gt;&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font face=&quot;Courier New&quot;&gt;&lt;font style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;- hospitalizados_por_milhao - doses_por_milhao&lt;/span&gt;&lt;/font&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
+          <mxGeometry x="300" y="310" width="240" height="170" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
