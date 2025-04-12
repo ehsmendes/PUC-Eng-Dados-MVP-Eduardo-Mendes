@@ -84,8 +84,8 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 
 ![Figura](./pictures/taxa_morte_mundo.jpg)
 
-###### 5.1.2 - Esse número flutuou ao ser comparado com os índices brasileiros?
-###### R: Sim - A taxa brasileira foi bem mais que a mundial, 0.028 contra 0.014.
+###### 5.1.2 - Esse número flutou ao ser comparado com os índices brasileiros?
+###### R: Sim - A taxa brasileira foi bem maior que a mundial, 0.028 contra 0.014, ou seja, o dobro.
 
 ![Figura](./pictures/taxa_morte_brasil.jpg)
 ###### 5.1.2.1 - Expansão da pergunta - Esse número flutuou ao ser comparado com os índices brasileiros?
@@ -94,8 +94,8 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 
 ![Figura](./pictures/taxa_morte_maiores.jpg)
 
-###### 5.1.2.2- Expansão da pergunta - Esse número flutuou ao ser comparado com os índices brasileiros?
-###### R: Analisando os 15 países com as menores taxas de mortalidade, as taxas brasileiras são bem maiores, flutuação muito grande em comparação com a 15 lugar, Bahrain com 0.005.
+###### 5.1.2.2- Expansão da pergunta - Esse número flutuou ao ser comparado com os índices brasileiros? As taxas brasileiras, estão entram as 15 menores do mundo?
+###### R: Analisando os 15 países com as menores taxas de mortalidade, as taxas brasileiras (0.028) são bem maiores em comparação com a 15 lugar, Bahrain (0.005).
 
 ![Figura](./pictures/taxa_morte_menores.jpg)
 
@@ -104,41 +104,49 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 ![Figura](./pictures/casos_maior.jpg)
 
 ###### 5.1.4 O número de casos teve variação entre as localidades? 
-###### R: Sim, uma flutuação enorme 279.555 (Andorra) casos contra 9 (Samoa) no entanto, isso se torna irrelevante devido a tamanho da população dos mesmos.
+###### R: Sim, uma flutuação enorme 279.555 (Andorra) casos contra 9 (Samoa) no entanto isso se torna irrelevante devido a tamanho da população das localidades.
 
 ![Figura](./pictures/casos_menor.jpg)
 
-###### 5.1.4.1 Expansão da pergunta - O número de casos teve variação entre as localidades? E com relação ao Brasil?  
-###### R: Brasil ficou bem abaixo com 105.909 casos de Andorra. Novamente, isso se torna irrelevante devido a tamanho da população entre os dois países.
+###### 5.1.4.1 Expansão da pergunta -  O número de casos teve variação entre os localidades? E com relação ao Brasil?  
+###### R: Brasil ficou bem abaixo com 105.909 casos em comparação com os de Andorra 279.555. Porém esta não é uma comparação justa devido à disparidade, principalmente populacional, entre as localidades.
 
 
 ![Figura](./pictures/casos_brasil.jpg)
 
 ###### 5.1.4.2 Expansão da pergunta - O número de casos teve variação entre as localidades? Tá, mas e a relação do Brasil com localidades semelhantes em termos de população, cultura e com a China que foi a origem da pandemia?
-###### R: Espanta a quantidade de casos reportados pela China (país de origem da pandemia) contra as demais localidades. Brasil e Europa quase equivalentes, aumento razoável de caos nos E.U.A.
+###### R: Espanta a quantidade de casos reportados pela China (país de origem da pandemia) contra as demais localidades. Brasil e Europa quase equivalentes, mas há um aumento razoável de caos quando se compara com os E.U.A.
 
 ![Figura](./pictures/casos_comparacao.jpg)
 
-###### 5.1.4.3 Expansão da pergunta - O número de casos teve variação entre as localidades? OK, mas e a taxa de mortalidade?
-###### Outro espanto, China com alta taxa com relação aos casos. Brasil esperadamente acima de Estados Unidos e Europa o que índica fragilidade no sistema público de saúde, pois a quantidade de casos é relativamente próxima. Comparando com o México, por ser latino e de dimensões semelhantes às brasileiras ficamos bem atrás em relação à taxa de mortalidade, número que se torna ainda mais expressivo pelo fato do México ter tido apenas 1/3 dos casos reportados por milhão de pessoas.
+###### 5.1.4.3 Expansão da pergunta - O número de casos teve variação entre as localidades? OK, mas e as taxas de mortalidade comparadas com localidades semelhantes em termos de população, cultura e com a China que foi a origem da pandemia?
+###### Outro espanto, China com alta taxa com relação aos casos. Brasil esperadamente acima de Estados Unidos e Europa o que índica fragilidade no sistema público de saúde, pois a quantidade de casos é relativamente próxima. Se comparado ao México, por ser latino e de dimensões semelhantes às brasileiras ficamos bem atrás em relação à taxa de mortalidade, este número que se torna ainda mais expressivo pelo fato do México ter tido apenas 1/3 dos casos reportados por milhão de pessoas.
 
 ![Figura](./pictures/taxa_morte_comparacao.jpg)
 
+###### 5.1.5. Variação entre o Brasil e o mundo sobre a quantidate de pessoas hospitalizadas X mortes.
+###### R: Não pode ser respondida, porque não há dados sobre hospitalizados no Brasil.
 ###### 5.1.6. Tempo entre a primeira dose administrada no mundo X Brasil.
-###### R: A diferença é grande entre a primeira dose dada no mundo (oito de dezembro de 2020 na Noruega) e a primeira dose no Brasil (18 de janeiro de 2021), mais de 40 dias. OBS. A data foi extraída a partir do momento em que a contagem de doses passou a ser maior que 0.0001 por milhão de pessoas, logo pode haver uma pequena variação nas datas efetivas. 
+###### R: A diferença é grande entre a primeira dose dada no mundo (oito de dezembro de 2020 na Noruega) e a primeira dose no Brasil (18 de janeiro de 2021), mais de 40 dias. 
+###### OBS. A data foi extraída a partir do momento em que a contagem de doses passou a ser maior que 0.0001 por milhão de pessoas, logo pode haver uma pequena variação nas datas efetivas. 
 
 ![Figura](./pictures/vacina_mundo.jpg)
 ![Figura](./pictures/vacina_brasil.jpg)
 
 ###### 5.1.7. Ritmo de vacinação por país.
 ###### R: Aqui, foi usado o mesmo parâmetro de escolha das localidades para comparação. Localidades semelhantes em termos de população, cultura e a China que foi a origem da pandemia. Alguns pontos interessantes:
-###### 1. Estados Unidos com ritmo muito forte até abril(2021), quando começa a cair até novembro (2021) quando há um leve final aummento e se mantem estável até o período de medição.
-###### 2. O ritmo do Brasil, cresce até abril (2021) quando para de crescer. O crescimento volta em junho (2021). Se mantém atá agosto (2021) quando começa a diminuir até o final do período.
+###### 1. Estados Unidos com ritmo muito forte até abril(2021), depois começa a cair até novembro (2021) quando há um leve aummento mantendo-se estável até o fim do período de medição.
+###### 2. O ritmo do Brasil, é bom até abril (2021) quando para de crescer. Cai em maio(2021) e volta forte em junho (2021). Se mantém atá agosto (2021) quando começa a diminuir até o final do período.
 ###### 3. China tem um crescimento muito grande em maio (2021) que coincide com a queda de vacinação nos E.U.A. Se mantém forte até setembro (2021). Quando começa a cair, em novembro(2021) volta a crescer e tem um pico em dezembro (2021).
+
+###### Convido para fazerem suas próprias manipulações, clicando em cada uma das localidades, incluindo ou removendo-a do gráfico.
+
 
 ![Figura](./pictures/vacina_ritmo.jpg)
 
-###### Aqui, convido para fazerem suas próprias manipulações, clicando em cada uma das localidades, incluindo ou removendo-a do gráfico.
+###### 5.1.7. Ritmo de vacinação por país - Expansão da pergunta
+###### Aqui é um cruzamento entre o ritmo de vacinação contra a taxa de mortalidade. Interessante ver como o aumento das doses dimuniu a quantidade de mortalidade
+
 ![Figura](./pictures/vacina_contra_morte.jpg)
 
 ##### 6. Discussão Geral.
