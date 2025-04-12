@@ -152,17 +152,17 @@ Baseado na características dos dados coletados, o esquema **estrela** escolhido
 ![Figura](./pictures/vacina_contra_morte.jpg)
 
 ##### 6. Discussão Geral.
-##### A pandemia da COVID-19 causou um impacto muito grande no mundo, consegui tirar como conclusão que o que mais matou não foi a taxa de contaminação em si, mas o nível de preparo dos países com relação aos seus sistemas de saúde, frágeis em países em desenvolvimento como o Brasil. 
-##### A taxa de contaminação variou bastante entre as localidades, sendo alta até mesmo em localidades mais desenvolvidas como, E.U.A e Europa. Por outro lado, foi surpreendentemente baixa na China, origem do vírus.
-##### As vacinas foram super importantes para o fim da pandemia, mas houve um determinado período onde os países em desenvolvimento não conseguiram manter um ritmo adequado, muito provavelmente devido à alta demanda das localidades que de fato produziram suas vacinas, como a Europa com a AstraZeneca, Pfizer e Janssen nos E.U.A, e Corona-Vac na China.
+A pandemia da COVID-19 causou um impacto muito grande no mundo, consegui tirar como conclusão que o que mais matou não foi a taxa de contaminação em si, mas o nível de preparo dos países com relação aos seus sistemas de saúde, frágeis em países em desenvolvimento como o Brasil.
+
+A taxa de contaminação variou bastante entre as localidades, sendo alta até mesmo em localidades mais desenvolvidas como, E.U.A e Europa. Por outro lado, foi surpreendentemente baixa na China, origem do vírus.
+
+As vacinas foram super importantes para o fim da pandemia, mas houve um determinado período onde os países em desenvolvimento não conseguiram manter um ritmo adequado, muito provavelmente devido à alta demanda das localidades que de fato produziram suas vacinas, como a Europa com a AstraZeneca, Pfizer e Janssen nos E.U.A, e Corona-Vac na China.
 
 ##### 7. Autoavaliação
-
-Creio que consegui atingir os objetivos delineados, me guiei pelo paragrafor de "Critérios de valiação" no final da página tentei ser o mais literal possível com relação à eles.
+Creio que consegui atingir os objetivos delineados, me guiei pelo paragrafo de "Critérios de valiação" no final da página das disciplinas, tentei ser o mais literal possível com relação ao que deveria ser feito.
  
 Minha maior dificuldade foi no começo do trabalho onde tive que definir o tema e como faria para conduzir a analise em si.
  
 Sobre a parte técnica, confesso que não foi um grande problema, creio que consegui superar bem os desafios propóstos apeser de ter me deparado com ferramentas que eu não conhecia, como DataBricks e PySark.
  
 Senti falta de encontros síncronos, não com relação ao MVP, mas no que diz respeito as disciplinas, alí enfrentei o seguinte problema: lia, entendia, mas não conseguia concretizar o conhecimento, gosto muito de confirmar o entendimento após  o aprendizado de temas mais sensíveis e isso não ocorreu durante a sprint.
-
